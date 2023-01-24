@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import styles from "@/styles/Details.module.css";
 // import { Head } from "next/document";
 import Link from "next/link";
-import { GetServerSidePropsContext } from "next";
+import { GetServerSidePropsContext, InferGetServerSidePropsType } from "next";
 
 type Stats = {
   name: string;
@@ -22,14 +22,17 @@ export async function getServerSideProps({
   const resp = await fetch(
     `https://jherr-pokemon.s3.us-west-1.amazonaws.com/pokemon/${params.id}.json`
   );
+  const pokemon: Pokemon = await resp.json();
   return {
     props: {
-      pokemon: await resp.json(),
+      pokemon,
     },
   };
 }
 
-export default function Details({ pokemon }: Pokemon) {
+export default function Details({
+  pokemon,
+}: InferGetServerSidePropsType<typeof getServerSideProps>) {
   return (
     <div>
       {/* <Head>
