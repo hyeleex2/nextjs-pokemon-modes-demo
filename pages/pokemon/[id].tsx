@@ -16,11 +16,10 @@ interface Pokemon {
   image: string;
 }
 
-export async function getServerSideProps({
-  params,
-}: GetServerSidePropsContext) {
+export async function getServerSideProps(context: GetServerSidePropsContext) {
+  const { params } = context;
   const resp = await fetch(
-    `https://jherr-pokemon.s3.us-west-1.amazonaws.com/pokemon/${params.id}.json`
+    `https://jherr-pokemon.s3.us-west-1.amazonaws.com/pokemon/${params?.id}.json`
   );
   const pokemon: Pokemon = await resp.json();
   return {
