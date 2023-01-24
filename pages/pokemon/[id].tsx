@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import styles from "@/styles/Details.module.css";
 // import { Head } from "next/document";
 import Link from "next/link";
+import { Pokemon as PokemonType } from "..";
 import { GetServerSidePropsContext, InferGetServerSidePropsType } from "next";
 
 type Stats = {
@@ -16,7 +17,20 @@ interface Pokemon {
   image: string;
 }
 
-export async function getServerSideProps(context: GetServerSidePropsContext) {
+export async function getStaticPaths() {
+  const resp = await fetch(
+    `https://jherr-pokemon.s3.us-west-1.amazonaws.com/index.json`
+  );
+  const pokemon: PokemonType[] = await resp.json();
+  return {
+    paths: pokemon.map((pokemon) => ({
+      params: { id: pokemon.id.toString() },
+    })),
+    fallback: false,
+  };
+}
+
+export async function getStaticProps(context: GetServerSidePropsContext) {
   const { params } = context;
   const resp = await fetch(
     `https://jherr-pokemon.s3.us-west-1.amazonaws.com/pokemon/${params?.id}.json`
