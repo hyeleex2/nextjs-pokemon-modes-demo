@@ -45,7 +45,7 @@ export async function getStaticProps(context: GetServerSidePropsContext) {
 
 export default function Details({
   pokemon,
-}: InferGetServerSidePropsType<typeof getServerSideProps>) {
+}: InferGetServerSidePropsType<typeof getStaticProps>) {
   return (
     <div>
       {/* <Head>
